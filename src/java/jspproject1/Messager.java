@@ -29,7 +29,6 @@ public class Messager {
             Class.forName(DBDRIVER);
             conn = DriverManager.getConnection(DBCONNECTION, DBUSER, DBPASS);
 
-            // prepare select statement
             String sql = "SELECT * from percakapan where tujuan=? order by id desc";
             st = conn.prepareStatement(sql);
             st.setString(1, this.tujuan);
@@ -41,13 +40,11 @@ public class Messager {
                 msg.pesan = rs.getString("pesan");
                 hasil.add(msg);
             }
-            
             conn.close();
-
-            return hasil;
         } catch (Exception ex) {
-            return null;
+            ex.printStackTrace();
         }
+        return hasil;
     }
     
     public void addMessage(String pengirim, String pesan) {
@@ -58,13 +55,11 @@ public class Messager {
         
         Connection conn = null;
         PreparedStatement st;
-        ArrayList<Message> hasil = new ArrayList<Message>();
 
         try {
             Class.forName(DBDRIVER);
             conn = DriverManager.getConnection(DBCONNECTION, DBUSER, DBPASS);
 
-            // prepare select statement
             String sql = "INSERT INTO percakapan (tujuan,pengirim,pesan) values (?,?,?)";
             st = conn.prepareStatement(sql);
             st.setString(1, this.tujuan);
